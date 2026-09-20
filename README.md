@@ -70,8 +70,11 @@ failed to parse.
 - `name [ttl] [class] type rdata` in any order for `ttl`/`class`, both optional
 - indented lines that omit the name, reusing the previous record's owner
 - `;` comments, including safely inside quoted TXT strings
-- any record type; `CNAME`, `NS`, `PTR`, and the hostname field of `MX` get
-  a trailing dot added if missing, everything else is passed through as-is
+- any record type; `CNAME`, `NS`, `PTR`, the hostname field of `MX`, the
+  mname/rname fields of `SOA`, and the target field of `SRV` get a trailing
+  dot added if missing, everything else is passed through as-is
+- `SOA` and `SRV` records must fit on one line (no parenthesized
+  multi-line rdata yet)
 
 ## Requirements
 

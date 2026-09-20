@@ -120,6 +120,14 @@ def normalize_rdata(rtype, rdata_tokens):
     if rtype == "MX" and len(rdata_tokens) == 2:
         priority, host = rdata_tokens
         return f"{priority} {fqdn(host)}"
+    if rtype == "SOA" and len(rdata_tokens) == 7:
+        # mname (primary nameserver) and rname (mailbox, dot instead of @)
+        # are the only hostname-shaped fields; the rest are plain integers.
+        mname, rname, *timers = rdata_tokens
+        return f"{fqdn(mname)} {fqdn(rname)} " + " ".join(timers)
+    if rtype == "SRV" and len(rdata_tokens) == 4:
+        priority, weight, port, target = rdata_tokens
+        return f"{priority} {weight} {port} {fqdn(target)}"
     return " ".join(rdata_tokens)
 
 
